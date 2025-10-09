@@ -18,22 +18,28 @@ public class Drive{
     private WPI_VictorSPX frenteDireita;
     private WPI_VictorSPX trasDireita;
 
+
+
     // Inicializando ID dos VictorSPX
     public Drive(){
-        frenteEsquerda = new WPI_VictorSPX(1);
-        frenteDireita = new WPI_VictorSPX(2);
+        frenteEsquerda = new WPI_VictorSPX(3);
+        frenteDireita = new WPI_VictorSPX(5);
 
-        trasDireita = new WPI_VictorSPX(3);
-        trasEsquerda = new WPI_VictorSPX(4);
+        trasDireita = new WPI_VictorSPX(4);
+        trasEsquerda = new WPI_VictorSPX(2);
+
+        //Invertendo motores
+        frenteDireita.setInverted(true);
+        trasDireita.setInverted(true);
     }
 
 
     public void drive(){
-        double velocidade = driveController.getRightY(); // Movimenta frente e tras
-        double rotacao = driveController.getLeftX(); // Movimenta para os lados
+        double velocidade = driveController.getRawAxis(1); // Movimenta frente e tras
+        double rotacao = driveController.getRawAxis(4); // Movimenta para os lados
 
-        double esquerda = velocidade - rotacao;
-        double direita = velocidade + rotacao;
+        double esquerda = velocidade + rotacao;
+        double direita = velocidade - rotacao;
 
         // Faz os motores funcionar
         frenteEsquerda.set(ControlMode.PercentOutput,(esquerda));
