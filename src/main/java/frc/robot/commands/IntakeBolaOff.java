@@ -3,23 +3,23 @@ package frc.robot.commands;
 import frc.robot.subsystems.IntakeBola;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeBolaParar extends Command {
+public class IntakeBolaOff extends Command {
 
     private final IntakeBola intakeBola;
 
-    public IntakeBolaParar(IntakeBola intakeBola){
+    public IntakeBolaOff(IntakeBola intakeBola){
         this.intakeBola = intakeBola;
         addRequirements(intakeBola);
     }
 
     @Override
     public void initialize(){
-        System.out.println("Voltando intake");
+        System.out.println("Ligando rodinhas");
     }
     
     @Override
     public void execute(){
-        intakeBola.setReferencia(0.3);
+        intakeBola.motorColeta.disable();
     }
 
     @Override

@@ -3,23 +3,25 @@ package frc.robot.commands;
 import frc.robot.subsystems.IntakeBola;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeBolaParar extends Command {
+public class IntakeBolaGirar extends Command {
 
     private final IntakeBola intakeBola;
+    private final double speed;
 
-    public IntakeBolaParar(IntakeBola intakeBola){
+    public IntakeBolaGirar(IntakeBola intakeBola, double speed){
         this.intakeBola = intakeBola;
+        this.speed = speed;
         addRequirements(intakeBola);
     }
 
     @Override
     public void initialize(){
-        System.out.println("Voltando intake");
+        System.out.println("Ligando rodinhas");
     }
     
     @Override
     public void execute(){
-        intakeBola.setReferencia(0.3);
+        intakeBola.motorColeta.set(speed);
     }
 
     @Override

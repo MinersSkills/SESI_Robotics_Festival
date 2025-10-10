@@ -22,7 +22,6 @@ public class IntakeBolaColetar extends Command {
     @Override
     public void execute(){
         intakeBola.setReferencia(setpoint);
-        // intakeBola.motorColeta.set(1);
     }
 
     @Override
