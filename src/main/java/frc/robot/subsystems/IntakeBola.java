@@ -9,20 +9,21 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class IntakeBola extends ExampleSubsystem{
+public class IntakeBola extends ExampleSubsystem {
 
     // Controle
     XboxController driveController = new XboxController(0);
 
-    // SparkMax e Enconder 
-    public static SparkMax motorIntakeBola = new SparkMax(5, MotorType.kBrushless);
-    public static SparkMax motorColeta = new SparkMax(2, MotorType.kBrushless);
+    // SparkMax e Enconder
+    public static SparkMax motorIntakeBola = new SparkMax(2, MotorType.kBrushless);
+    // public static SparkMax motorColeta = new SparkMax(2, MotorType.kBrushless);
     public RelativeEncoder encoder_bola;
     private SparkMaxConfig motor_intakeBConf;
     private SparkMaxConfig motorColetaConf;
 
-    public IntakeBola(){
+    public IntakeBola() {
         // Configurando SparkMax Intake
         motor_intakeBConf = new SparkMaxConfig();
         motor_intakeBConf.encoder.positionConversionFactor(1);
@@ -35,36 +36,41 @@ public class IntakeBola extends ExampleSubsystem{
         motorColetaConf = new SparkMaxConfig();
         motorColetaConf.idleMode(IdleMode.kBrake);
 
-        motorColeta.configure(motorColetaConf, null, PersistMode.kNoPersistParameters);
+        // motorColeta.configure(motorColetaConf, null,
+        // PersistMode.kNoPersistParameters);
 
         // Pegando valor do encoder
         encoder_bola = motorIntakeBola.getEncoder();
     }
 
-    public void setReferencia(double setpoint){
-        
-        if (setpoint > 0.5){
+    public void setReferencia(double setpoint) {
+
+        if (setpoint > 0.5) {
             motor_intakeBConf.closedLoop.p(0.05);
             motorIntakeBola.configure(motor_intakeBConf, null, PersistMode.kNoPersistParameters);
             motorIntakeBola.getClosedLoopController().setReference(setpoint, ControlType.kPosition);
 
         } else {
-            motor_intakeBConf.closedLoop.p(0.5);
+            motor_intakeBConf.closedLoop.p(1);
             motorIntakeBola.configure(motor_intakeBConf, null, PersistMode.kNoPersistParameters);
             motorIntakeBola.getClosedLoopController().setReference(setpoint, ControlType.kPosition);
         }
 
     }
 
-    public void intakeBola(){
-        
-        if(driveController.getAButtonPressed()){
-            setReferencia(10);
-            motorColeta.set(1);
-                // Adicionar lógica do sensor para parar a coleta
-        } else if(driveController.getXButtonPressed()){
-            setReferencia(0.3);
-            motorColeta.set(0);
+    public void intakeBola() {
+
+        if (driveController.getAButton()) {
+            setReferencia(7.3);
+            // motorColeta.set(1);
+            // Adicionar lógica do sensor para parar a coleta
+        } else if (driveController.getXButton()) {
+            setReferencia(1);
+            // motorColeta.set(0);
         }
+    }
+
+    public void dashboard() {
+        SmartDashboard.putNumber("Posicao Atual motor intakeBola: ", encoder_bola.getPosition());
     }
 }

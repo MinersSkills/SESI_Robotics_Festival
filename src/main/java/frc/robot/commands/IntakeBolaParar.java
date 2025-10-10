@@ -20,7 +20,7 @@ public class IntakeBolaParar extends Command {
     @Override
     public void execute(){
         intakeBola.setReferencia(0.3);
-        intakeBola.motorColeta.set(0);
+        // intakeBola.motorColeta.set(0);
     }
 
     @Override
