@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 public class IntakeBola extends ExampleSubsystem {
 
@@ -18,7 +19,7 @@ public class IntakeBola extends ExampleSubsystem {
 
     // SparkMax e Enconder
     public static SparkMax motorIntakeBola = new SparkMax(2, MotorType.kBrushless);
-    // public static SparkMax motorColeta = new SparkMax(2, MotorType.kBrushless);
+    public static SparkMax motorColeta = new SparkMax(18, MotorType.kBrushless);
     public RelativeEncoder encoder_bola;
     private SparkMaxConfig motor_intakeBConf;
     private SparkMaxConfig motorColetaConf;
@@ -36,8 +37,7 @@ public class IntakeBola extends ExampleSubsystem {
         motorColetaConf = new SparkMaxConfig();
         motorColetaConf.idleMode(IdleMode.kBrake);
 
-        // motorColeta.configure(motorColetaConf, null,
-        // PersistMode.kNoPersistParameters);
+        motorColeta.configure(motorColetaConf, null, PersistMode.kNoPersistParameters);
 
         // Pegando valor do encoder
         encoder_bola = motorIntakeBola.getEncoder();
@@ -60,13 +60,19 @@ public class IntakeBola extends ExampleSubsystem {
 
     public void intakeBola() {
 
+        // Articulação
         if (driveController.getAButton()) {
             setReferencia(7.3);
-            // motorColeta.set(1);
             // Adicionar lógica do sensor para parar a coleta
         } else if (driveController.getXButton()) {
             setReferencia(1);
-            // motorColeta.set(0);
+        } 
+
+        // Rodinhas coleta
+        if (driveController.getRightBumperButton()){
+            motorColeta.set(1);
+        } else if(driveController.getLeftBumperButton()){
+            motorColeta.set(-1);
         }
     }
 
