@@ -7,10 +7,17 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeBolaColetar;
+import frc.robot.commands.IntakeBolaGirar;
+import frc.robot.commands.IntakeBolaOff;
+import frc.robot.commands.IntakeBolaParar;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeBola;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -21,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  XboxController driveController = new XboxController(0);
 
   private Drive drive = new Drive();
   public IntakeBola intakeBola = new IntakeBola();
@@ -53,6 +62,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // COLOCAR AQUI OS COMANDOS PARALELOS!
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -60,6 +70,20 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    if (driveController.getYButton()) {
+      Commands.sequence(
+          Commands.parallel(
+              new IntakeBolaGirar(intakeBola, 1).withTimeout(3),
+              new IntakeBolaColetar(intakeBola, 7.3).withTimeout(0.35)
+          ),
+          new WaitCommand(3),
+          Commands.parallel(
+              new IntakeBolaOff(intakeBola),
+              new IntakeBolaParar(intakeBola)
+          )
+      );
+  }  
   }
 
   /**
