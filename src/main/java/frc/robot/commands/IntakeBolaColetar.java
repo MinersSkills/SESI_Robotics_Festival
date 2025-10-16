@@ -7,6 +7,7 @@ public class IntakeBolaColetar extends Command {
 
     private final IntakeBola intakeBola;
     private final double setpoint;
+    double tolerancia = 0.0;
 
     public IntakeBolaColetar(IntakeBola intakeBola, double setpoint){
         this.intakeBola = intakeBola;
@@ -22,11 +23,16 @@ public class IntakeBolaColetar extends Command {
     @Override
     public void execute(){
         intakeBola.setReferencia(setpoint);
+        tolerancia = setpoint - intakeBola.encoder_bola.getPosition();
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        if (intakeBola.encoder_bola.getPosition() >= tolerancia) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

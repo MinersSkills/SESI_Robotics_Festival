@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class IntakeBolaParar extends Command {
 
     private final IntakeBola intakeBola;
+    private final double setpoint = 1;
+    double tolerancia = 0.0;
 
     public IntakeBolaParar(IntakeBola intakeBola){
         this.intakeBola = intakeBola;
@@ -19,12 +21,17 @@ public class IntakeBolaParar extends Command {
     
     @Override
     public void execute(){
-        intakeBola.setReferencia(0.3);
+        intakeBola.setReferencia(setpoint);
+        tolerancia = setpoint - intakeBola.encoder_bola.getPosition();
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        if (intakeBola.ativado() == true){
+            return false;
+        } else{
+            return true;
+        }
     }
 
 }

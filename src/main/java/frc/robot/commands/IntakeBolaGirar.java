@@ -26,7 +26,13 @@ public class IntakeBolaGirar extends Command {
 
     @Override
     public boolean isFinished(){
-        return false;
+        if(intakeBola.ativado() == true){
+            return false;
+
+            
+        } else {
+            return true;
+        }
     }
 
 }
