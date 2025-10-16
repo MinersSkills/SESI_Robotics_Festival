@@ -11,10 +11,11 @@ import frc.robot.commands.IntakeBolaColetar;
 import frc.robot.commands.IntakeBolaGirar;
 import frc.robot.commands.IntakeBolaOff;
 import frc.robot.commands.IntakeBolaParar;
+import frc.robot.joysticks.KeyboardController;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+// import frc.robot.subsystems.IntakeBoia;
 import frc.robot.subsystems.IntakeBola;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -29,16 +30,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  XboxController driveController = new XboxController(0);
-
+  private final KeyboardController keyboardOperator = new KeyboardController();
   private Drive drive = new Drive();
   public IntakeBola intakeBola = new IntakeBola();
+  // public IntakeBoia intakeBoia = new IntakeBoia();
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -50,6 +51,8 @@ public class RobotContainer {
   public void chamarFuncoes(){
     drive.drive();
     intakeBola.intakeBola();
+    // intakeBoia.intakeBoia();
+    intakeBola.ativado();
   }
 
   /**
@@ -71,19 +74,27 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    if (driveController.getYButton()) {
+    keyboardOperator.getCTrigger().onTrue(
+      Commands.runOnce(() -> System.out.println("Tecla C detectada via NetworkTables!"))
+    );
+    
+
+    keyboardOperator.getCTrigger().onTrue(
       Commands.sequence(
-          Commands.parallel(
-              new IntakeBolaGirar(intakeBola, 1).withTimeout(3),
-              new IntakeBolaColetar(intakeBola, 7.3).withTimeout(0.35)
-          ),
-          new WaitCommand(3),
-          Commands.parallel(
-              new IntakeBolaOff(intakeBola),
-              new IntakeBolaParar(intakeBola)
-          )
-      );
-  }  
+        new IntakeBolaColetar(intakeBola, 7.6),
+        new IntakeBolaGirar(intakeBola, 0.4),
+        new IntakeBolaParar(intakeBola)
+      )
+  );
+  
+  m_driverController.y().onTrue(
+    Commands.sequence(
+      new IntakeBolaColetar(intakeBola, 7.6),
+      new IntakeBolaGirar(intakeBola, 0.4),
+      new IntakeBolaParar(intakeBola)
+    )
+); 
+
   }
 
   /**
