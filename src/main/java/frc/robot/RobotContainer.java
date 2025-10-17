@@ -4,21 +4,18 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.IntakeBolaColetar;
-import frc.robot.commands.IntakeBolaGirar;
-import frc.robot.commands.IntakeBolaOff;
-import frc.robot.commands.IntakeBolaParar;
+import frc.robot.commands.cBola.IntakeBolaColetar;
+import frc.robot.commands.cBola.IntakeBolaGirar;
+import frc.robot.commands.cBola.IntakeBolaOff;
+import frc.robot.commands.cBola.IntakeBolaParar;
 import frc.robot.joysticks.KeyboardController;
-import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
-// import frc.robot.subsystems.IntakeBoia;
-import frc.robot.subsystems.IntakeBola;
+import frc.robot.subsystems.bola.IntakeBola;
+import frc.robot.subsystems.drive.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -86,6 +83,8 @@ public class RobotContainer {
         new IntakeBolaParar(intakeBola)
       )
   );
+
+  keyboardOperator.getXTrigger().onTrue(new IntakeBolaOff(intakeBola));
   
   m_driverController.y().onTrue(
     Commands.sequence(
@@ -93,7 +92,9 @@ public class RobotContainer {
       new IntakeBolaGirar(intakeBola, 0.4),
       new IntakeBolaParar(intakeBola)
     )
-); 
+);
+
+  m_driverController.b().onTrue(new IntakeBolaOff(intakeBola));
 
   }
 

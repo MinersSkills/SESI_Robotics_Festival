@@ -1,23 +1,22 @@
-package frc.robot.commands;
+package frc.robot.commands.cBola;
 
-import frc.robot.subsystems.IntakeBola;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.bola.IntakeBola;
 
-public class IntakeBolaColetar extends Command {
+public class IntakeBolaParar extends Command {
 
     private final IntakeBola intakeBola;
-    private final double setpoint;
+    private final double setpoint = 1;
     double tolerancia = 0.0;
 
-    public IntakeBolaColetar(IntakeBola intakeBola, double setpoint){
+    public IntakeBolaParar(IntakeBola intakeBola){
         this.intakeBola = intakeBola;
-        this.setpoint = setpoint;
         addRequirements(intakeBola);
     }
 
     @Override
     public void initialize(){
-        System.out.println("Descendo intake para coleta");
+        System.out.println("Voltando intake");
     }
     
     @Override
@@ -28,10 +27,10 @@ public class IntakeBolaColetar extends Command {
 
     @Override
     public boolean isFinished(){
-        if (intakeBola.encoder_bola.getPosition() >= tolerancia) {
-            return true;
-        }else{
+        if (intakeBola.ativado() == true){
             return false;
+        } else{
+            return true;
         }
     }
 

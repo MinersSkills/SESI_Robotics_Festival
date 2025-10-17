@@ -21,4 +21,8 @@ public class KeyboardController {
     public Trigger getCTrigger(){
         return createTrigger("c");
     }
+
+    public Trigger getXTrigger(){
+        return createTrigger("x");
+    }
 }

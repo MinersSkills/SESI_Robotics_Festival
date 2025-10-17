@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.bola;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ExampleSubsystem;
 
 public class IntakeBola extends ExampleSubsystem {
 
@@ -72,7 +73,7 @@ public class IntakeBola extends ExampleSubsystem {
 
         // Rodinhas coleta
         if (driveController.getRightBumperButton()){
-            motorColeta.set(0.5);
+            motorColeta.set(0.7);
         } else if(driveController.getLeftBumperButton()){
             motorColeta.set(-0.7);
         } else {

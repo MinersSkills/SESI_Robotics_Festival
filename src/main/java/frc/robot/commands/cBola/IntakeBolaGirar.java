@@ -1,14 +1,16 @@
-package frc.robot.commands;
+package frc.robot.commands.cBola;
 
-import frc.robot.subsystems.IntakeBola;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.bola.IntakeBola;
 
-public class IntakeBolaOff extends Command {
+public class IntakeBolaGirar extends Command {
 
     private final IntakeBola intakeBola;
+    private final double speed;
 
-    public IntakeBolaOff(IntakeBola intakeBola){
+    public IntakeBolaGirar(IntakeBola intakeBola, double speed){
         this.intakeBola = intakeBola;
+        this.speed = speed;
         addRequirements(intakeBola);
     }
 
@@ -19,14 +21,15 @@ public class IntakeBolaOff extends Command {
     
     @Override
     public void execute(){
-        intakeBola.motorColeta.disable();
+        IntakeBola.motorColeta.set(speed);
     }
 
     @Override
     public boolean isFinished(){
-        
         if(intakeBola.ativado() == true){
             return false;
+
+            
         } else {
             return true;
         }
