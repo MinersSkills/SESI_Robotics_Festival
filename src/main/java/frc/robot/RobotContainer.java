@@ -4,12 +4,15 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.cBola.IntakeBolaColetar;
 import frc.robot.commands.cBola.IntakeBolaGirar;
 import frc.robot.commands.cBola.IntakeBolaOff;
 import frc.robot.commands.cBola.IntakeBolaParar;
+import frc.robot.commands.cDrive.DriveBack;
+import frc.robot.commands.cDrive.DriveForward;
+import frc.robot.commands.cDrive.DriveLeft;
+import frc.robot.commands.cDrive.DriveRight;
 import frc.robot.joysticks.KeyboardController;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.bola.IntakeBola;
@@ -79,7 +82,7 @@ public class RobotContainer {
     keyboardOperator.getCTrigger().onTrue(
       Commands.sequence(
         new IntakeBolaColetar(intakeBola, 7.6),
-        new IntakeBolaGirar(intakeBola, 0.4),
+        new IntakeBolaGirar(intakeBola, 0.7),
         new IntakeBolaParar(intakeBola)
       )
   );
@@ -89,7 +92,7 @@ public class RobotContainer {
   m_driverController.y().onTrue(
     Commands.sequence(
       new IntakeBolaColetar(intakeBola, 7.6),
-      new IntakeBolaGirar(intakeBola, 0.4),
+      new IntakeBolaGirar(intakeBola, 0.7),
       new IntakeBolaParar(intakeBola)
     )
 );
@@ -105,6 +108,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return Commands.sequence(
+      new DriveBack(drive, 0.45, 0.85),
+      new IntakeBolaColetar(intakeBola, 7.6),
+      new IntakeBolaGirar(intakeBola, 0.4),
+      new IntakeBolaParar(intakeBola),
+      new DriveForward(drive, 0.45, 0.85)
+    );
   }
 }
