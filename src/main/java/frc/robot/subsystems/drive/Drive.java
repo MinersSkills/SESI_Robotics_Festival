@@ -4,19 +4,20 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.ExampleSubsystem;
 
 
-public class Drive{
+public class Drive extends ExampleSubsystem{
 
     // Controle
     XboxController driveController = new XboxController(0);
 
     // Motores drive train
-    private WPI_VictorSPX frenteEsquerda;
-    private WPI_VictorSPX trasEsquerda;
+    public WPI_VictorSPX frenteEsquerda;
+    public WPI_VictorSPX trasEsquerda;
 
-    private WPI_VictorSPX frenteDireita;
-    private WPI_VictorSPX trasDireita;
+    public WPI_VictorSPX frenteDireita;
+    public WPI_VictorSPX trasDireita;
 
 
 
