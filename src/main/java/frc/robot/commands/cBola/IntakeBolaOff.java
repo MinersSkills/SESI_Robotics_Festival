@@ -1,12 +1,12 @@
 package frc.robot.commands.cBola;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.IntakeBolaConstants;
 import frc.robot.subsystems.bola.IntakeBola;
 
 public class IntakeBolaOff extends Command {
 
     private final IntakeBola intakeBola;
-    private final double setpoint = 1;
 
     public IntakeBolaOff(IntakeBola intakeBola) {
         this.intakeBola = intakeBola;
@@ -15,12 +15,12 @@ public class IntakeBolaOff extends Command {
 
     @Override
     public void initialize() {
-        System.out.println("Ligando rodinhas");
+        System.out.println("Parando coleta");
     }
 
     @Override
     public void execute() {
-        intakeBola.setReferencia(setpoint);
+        intakeBola.setReferencia(IntakeBolaConstants.setpoints.SHOOT_POSITION);
         IntakeBola.motorColeta.disable();
     }
 

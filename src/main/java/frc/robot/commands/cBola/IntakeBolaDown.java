@@ -1,17 +1,16 @@
 package frc.robot.commands.cBola;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.IntakeBolaConstants;
 import frc.robot.subsystems.bola.IntakeBola;
 
-public class IntakeBolaColetar extends Command {
+public class IntakeBolaDown extends Command {
 
     private final IntakeBola intakeBola;
-    private final double setpoint;
     double tolerancia = 0.0;
 
-    public IntakeBolaColetar(IntakeBola intakeBola, double setpoint){
+    public IntakeBolaDown(IntakeBola intakeBola){
         this.intakeBola = intakeBola;
-        this.setpoint = setpoint;
         addRequirements(intakeBola);
     }
 
@@ -22,8 +21,8 @@ public class IntakeBolaColetar extends Command {
     
     @Override
     public void execute(){
-        intakeBola.setReferencia(setpoint);
-        tolerancia = setpoint - intakeBola.encoder_bola.getPosition();
+        intakeBola.setReferencia(IntakeBolaConstants.setpoints.INTAKE_POSITION);
+        tolerancia = IntakeBolaConstants.setpoints.INTAKE_POSITION - intakeBola.encoder_bola.getPosition();
     }
 
     @Override

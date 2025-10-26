@@ -32,8 +32,8 @@ public class DriveLeft extends Command {
 
     @Override
     public void end(boolean interrupted){
-        drive.frenteDireita.disable();
-        drive.trasDireita.disable();
+        drive.frenteEsquerda.disable();
+        drive.trasEsquerda.disable();
     }
 
     @Override

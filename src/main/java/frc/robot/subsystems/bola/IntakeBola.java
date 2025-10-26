@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.constants.IntakeBolaConstants;
 
 public class IntakeBola extends ExampleSubsystem {
 
@@ -18,11 +19,11 @@ public class IntakeBola extends ExampleSubsystem {
     XboxController driveController = new XboxController(0);
 
     // Sensor para coleta
-    public DigitalInput sensor = new DigitalInput(1);
+    public DigitalInput sensor = new DigitalInput(IntakeBolaConstants.PORTA_SENSOR);
 
     // SparkMax e Enconder
-    public static SparkMax motorIntakeBola = new SparkMax(2, MotorType.kBrushless);
-    public static SparkMax motorColeta = new SparkMax(16, MotorType.kBrushless);
+    public static SparkMax motorIntakeBola = new SparkMax(IntakeBolaConstants.ID_MOTOR_ARTICULACAO, MotorType.kBrushless);
+    public static SparkMax motorColeta = new SparkMax(IntakeBolaConstants.ID_MOTOR_RODAS, MotorType.kBrushless);
     public RelativeEncoder encoder_bola;
     private SparkMaxConfig motor_intakeBConf;
     private SparkMaxConfig motorColetaConf;
@@ -49,33 +50,49 @@ public class IntakeBola extends ExampleSubsystem {
 
     public void setReferencia(double setpoint) {
 
-        if (setpoint > 0.5) {
-            motor_intakeBConf.closedLoop.p(0.05); // talvez 0.09
+        if (setpoint > IntakeBolaConstants.setpoints.TOLERANCE) {
+            motor_intakeBConf.closedLoop.p(IntakeBolaConstants.PID.P_BACK);
             motorIntakeBola.configure(motor_intakeBConf, null, PersistMode.kNoPersistParameters);
             motorIntakeBola.getClosedLoopController().setReference(setpoint, ControlType.kPosition);
 
         } else {
-            motor_intakeBConf.closedLoop.p(0.8);
+            motor_intakeBConf.closedLoop.p(IntakeBolaConstants.PID.P_GO);
             motorIntakeBola.configure(motor_intakeBConf, null, PersistMode.kNoPersistParameters);
             motorIntakeBola.getClosedLoopController().setReference(setpoint, ControlType.kPosition);
         }
 
     }
 
+    public void setIntakePosition(){
+        setReferencia(IntakeBolaConstants.setpoints.INTAKE_POSITION);
+    }
+
+    public void setShootPosition(){
+        setReferencia(IntakeBolaConstants.setpoints.SHOOT_POSITION);
+    }
+
+    public void setWheelsIntake(){
+        motorColeta.set(IntakeBolaConstants.speed.SPEED_INTAKE);
+    }
+
+    public void setWheelsShoot(){
+        motorColeta.set(IntakeBolaConstants.speed.SPEED_SHOOT);
+    }
+
     public void intakeBola() {
 
         // Articulação
-        if (driveController.getAButton()) {
-            setReferencia(7.6);
-        } else if (driveController.getXButton()) {
-            setReferencia(1);
+        if (driveController.getAButtonPressed()) {
+            setIntakePosition();
+        } else if (driveController.getXButtonPressed()) {
+            setShootPosition();
         } 
-
+        
         // Rodinhas coleta
         if (driveController.getRightBumperButton()){
-            motorColeta.set(0.7);
+            setWheelsIntake();
         } else if(driveController.getLeftBumperButton()){
-            motorColeta.set(-0.7);
+            setWheelsShoot();
         } else {
             motorColeta.disable();
         }

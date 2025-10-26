@@ -5,20 +5,21 @@
 package frc.robot;
 
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.cBola.IntakeBolaColetar;
-import frc.robot.commands.cBola.IntakeBolaGirar;
+import frc.robot.commands.cBola.IntakeBolaDown;
+import frc.robot.commands.cBola.IntakeBolaSpinToIntake;
+import frc.robot.commands.cBola.IntakeBolaSpinToShoot;
 import frc.robot.commands.cBola.IntakeBolaOff;
-import frc.robot.commands.cBola.IntakeBolaParar;
+import frc.robot.commands.cBola.IntakeBolaUP;
 import frc.robot.commands.cDrive.DriveBack;
 import frc.robot.commands.cDrive.DriveForward;
 import frc.robot.commands.cDrive.DriveLeft;
-import frc.robot.commands.cDrive.DriveRight;
 import frc.robot.joysticks.KeyboardController;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.bola.IntakeBola;
 import frc.robot.subsystems.drive.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -81,9 +82,9 @@ public class RobotContainer {
 
     keyboardOperator.getCTrigger().onTrue(
       Commands.sequence(
-        new IntakeBolaColetar(intakeBola, 7.6),
-        new IntakeBolaGirar(intakeBola, 0.7),
-        new IntakeBolaParar(intakeBola)
+        new IntakeBolaDown(intakeBola),
+        new IntakeBolaSpinToIntake(intakeBola),
+        new IntakeBolaUP(intakeBola)
       )
   );
 
@@ -91,9 +92,9 @@ public class RobotContainer {
   
   m_driverController.y().onTrue(
     Commands.sequence(
-      new IntakeBolaColetar(intakeBola, 7.6),
-      new IntakeBolaGirar(intakeBola, 0.7),
-      new IntakeBolaParar(intakeBola)
+      new IntakeBolaDown(intakeBola),
+      new IntakeBolaSpinToIntake(intakeBola),
+      new IntakeBolaUP(intakeBola)
     )
 );
 
@@ -109,11 +110,17 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Commands.sequence(
-      new DriveBack(drive, 0.45, 0.85),
-      new IntakeBolaColetar(intakeBola, 7.6),
-      new IntakeBolaGirar(intakeBola, 0.4),
-      new IntakeBolaParar(intakeBola),
-      new DriveForward(drive, 0.45, 0.85)
+      new DriveBack(drive, 0.35, 1.1),
+      new IntakeBolaDown(intakeBola),
+      new IntakeBolaSpinToIntake(intakeBola),
+      new IntakeBolaUP(intakeBola),
+      new DriveForward(drive, 0.45, 1.34),
+      new WaitCommand(0.75),
+      new DriveLeft(drive, 0.45, 0.76),
+      new WaitCommand(0.5),
+      new DriveBack(drive, 0.45, 1.7),
+      new WaitCommand(0.5),
+      new IntakeBolaSpinToShoot(intakeBola)
     );
   }
 }
