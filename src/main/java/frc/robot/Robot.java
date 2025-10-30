@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     m_robotContainer.intakeBola.dashboard();
     m_robotContainer.intakeBola.ativado();
-    // m_robotContainer.intakeBoia.dashboard();
+    m_robotContainer.intakeBoia.dashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

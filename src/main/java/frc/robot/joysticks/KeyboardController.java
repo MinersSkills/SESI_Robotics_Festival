@@ -25,4 +25,16 @@ public class KeyboardController {
     public Trigger getXTrigger(){
         return createTrigger("x");
     }
+
+    public Trigger getMTrigger(){
+        return createTrigger("m");
+    }
+
+    public Trigger getNTrigger(){
+        return createTrigger("n");
+    }
+
+    public Trigger getBTrigger(){
+        return createTrigger("b");
+    }
 }

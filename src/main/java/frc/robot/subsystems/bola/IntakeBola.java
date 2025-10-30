@@ -28,6 +28,8 @@ public class IntakeBola extends ExampleSubsystem {
     private SparkMaxConfig motor_intakeBConf;
     private SparkMaxConfig motorColetaConf;
 
+
+
     public IntakeBola() {
         // Configurando SparkMax Intake
         motor_intakeBConf = new SparkMaxConfig();
@@ -60,7 +62,6 @@ public class IntakeBola extends ExampleSubsystem {
             motorIntakeBola.configure(motor_intakeBConf, null, PersistMode.kNoPersistParameters);
             motorIntakeBola.getClosedLoopController().setReference(setpoint, ControlType.kPosition);
         }
-
     }
 
     public void setIntakePosition(){
@@ -81,10 +82,12 @@ public class IntakeBola extends ExampleSubsystem {
 
     public void intakeBola() {
 
+        int pov = driveController.getPOV();
+
         // Articulação
-        if (driveController.getAButtonPressed()) {
+        if (pov == 0) {
             setIntakePosition();
-        } else if (driveController.getXButtonPressed()) {
+        } else if (pov == 180) {
             setShootPosition();
         } 
         
